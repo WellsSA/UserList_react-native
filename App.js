@@ -4,6 +4,8 @@ import { StyleSheet, Text, TextInput, Button, View, FlatList } from 'react-nativ
 export default function App() {
   const [note, setNote] = useState('');
   const [notes, setNotes] = useState([]);
+  const [noteCounter, setNoteCounter] = useState(0);
+
   // handle user changes on input
   const handleNoteInput = stickyNote => {
     setNote(stickyNote);
@@ -11,8 +13,15 @@ export default function App() {
   
   // adds note item to array with other sticky notes
   const addNote = () => {
-    setNotes (notes => [...notes, note]);
     console.log (note);
+    
+    setNotes (notes => {
+      setNoteCounter(noteCounter + 1);
+      return [...notes, {
+        key: String(noteCounter),
+        value: note,
+      }];
+    });
   }
 
   return (
@@ -33,7 +42,7 @@ export default function App() {
         renderItem={
           note => (
             <View style={styles.listItem}>
-              <Text>{note.item}</Text>
+              <Text>{note.item.value}</Text>
             </View>
           )
         }
@@ -55,7 +64,8 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1, 
     marginBottom: 4, 
-    padding: 2
+    padding: 2,
+    flex: 1,
   },
   listItem: {
     padding: 12,
