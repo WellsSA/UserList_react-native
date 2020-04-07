@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, Button, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, TextInput, Button, View, FlatList } from 'react-native';
 
 export default function App() {
   const [note, setNote] = useState('');
@@ -27,14 +27,17 @@ export default function App() {
       />
       <Button title="+" onPress={addNote}></Button>
       </View>
-      <ScrollView>
       {/*Aqui será exibida a lista de lembretes*/}
-      {notes.map((note, index) => 
-        <View key={note+index} style={styles.listItem}>
-          <Text>{note}</Text>
-        </View>
-      )}
-      </ScrollView>
+      <FlatList
+        data={notes}
+        renderItem={
+          note => (
+            <View style={styles.listItem}>
+              <Text>{note.item}</Text>
+            </View>
+          )
+        }
+      />
     </View>
   );
 }
