@@ -7,6 +7,11 @@ export default function App() {
   const [users, setUsers] = useState([]);
   const [userCounter, setUserCounter] = useState(0);
   
+  const keyGen = key => {
+    // returns only even numbers greater than 10 =)
+    if(!key) return 10;
+    return 10 + (key * 2 - 2);
+  }
   // adds a user item to array with other users
   const addUser = () => {
     console.log (name);
@@ -14,7 +19,7 @@ export default function App() {
     setUsers (users => {
       setUserCounter(userCounter + 1);
       return [...users, {
-        key: String(userCounter * 10),
+        key: String(keyGen(userCounter)),
         value: { name, phone },
       }];
     });
