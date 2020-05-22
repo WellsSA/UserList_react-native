@@ -1,19 +1,19 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import colors from '../../styles/colors';
 
 const UserInput = ({ placeholder = '', value, onSetValue }) => {
-
   return (
     <View style={styles.inputSection}>
-      <TextInput 
-        placeholder={placeholder} 
+      <TextInput
+        placeholder={placeholder}
         style={styles.input}
         onChangeText={onSetValue}
         value={value}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   inputSection: {
@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    borderLeftColor: 'black',
-    borderLeftWidth: 1, 
-    marginBottom: 4, 
+    borderLeftColor: colors.primary,
+    borderLeftWidth: 1,
+    marginBottom: 4,
     padding: 2,
     paddingLeft: 10,
     flex: 1,
