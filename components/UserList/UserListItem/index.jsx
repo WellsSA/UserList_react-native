@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { colors, metrics } from '../../../styles';
 
-const UserList = ({ _key, user, onDelete }) => {
+const UserListItem = ({ _key, user, onDelete }) => {
   const { name, phone } = user;
 
   return (
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserList;
+export default UserListItem;
