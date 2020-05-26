@@ -2,11 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { colors, metrics } from '../../../styles';
 
-const UserListItem = ({ _key, user, onDelete }) => {
+const UserListItem = ({ _key, user, onEdit, onDelete }) => {
   const { name, phone } = user;
 
   return (
-    <TouchableOpacity onLongPress={onDelete.bind(this, _key)}>
+    <TouchableOpacity
+      onPress={onEdit.bind(this, _key)}
+      onLongPress={onDelete.bind(this, _key)}
+    >
       <View style={styles.listItem}>
         <Text>
           {name} - {phone}

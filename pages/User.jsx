@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Button, View, Alert } from 'react-native';
 
 import { colors, metrics } from '../styles';
 import { UserInput, UserList } from '../components';
 
-const User = () => {
+const User = ({ user, iUsers, onEdit }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(iUsers);
   const [userCounter, setUserCounter] = useState(0);
 
+  useEffect(() => {
+    if (user) {
+      const index = users.findIndex(_user => _user.key === user.key);
+      setUsers(prevUsers => {
+        const _users = [...prevUsers];
+        _users[index] = user;
+        return _users;
+      });
+    }
+  }, []);
   // returns only even numbers greater than 10 =)
   const keyGen = key => {
     if (!key) return 10;
@@ -29,8 +39,15 @@ const User = () => {
     });
   };
 
+  const editUser = keyToEdit => {
+    onEdit(
+      users.find(_user => _user.key === keyToEdit),
+      users
+    );
+  };
+
   const removeUser = keyToRemove => {
-    setUsers(users => users.filter(user => user.key !== keyToRemove));
+    setUsers(users => users.filter(_user => _user.key !== keyToRemove));
   };
 
   const confirmRemoveUser = keyToRemove => {
@@ -69,7 +86,11 @@ const User = () => {
       </View>
       {/* List seciton */}
       <View>
-        <UserList users={users} onDeleteItem={confirmRemoveUser} />
+        <UserList
+          users={users}
+          onEditItem={editUser}
+          onDeleteItem={confirmRemoveUser}
+        />
       </View>
     </View>
   );
