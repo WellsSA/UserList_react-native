@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { metrics } from '../styles';
+import { UserList, HeaderButton } from '../components';
 
-import { colors, metrics } from '../styles';
-import { UserInput, UserList } from '../components';
+const DEFAULT_USERS = [
+  {
+    key: '10',
+    value: { name: 'Zezim', phone: '11977774444' },
+  },
+  {
+    key: '12',
+    value: { name: 'Zezim2', phone: '11977775555' },
+  },
+  {
+    key: '14',
+    value: { name: 'Zezim3', phone: '11977775555' },
+  },
+]; // TODO: Refactor using redux
 
-const User = ({ user, iUsers, onEdit }) => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+const User = ({ user, iUsers = DEFAULT_USERS, onEdit = () => {} }) => {
   const [users, setUsers] = useState(iUsers);
-  const [userCounter, setUserCounter] = useState(0);
 
   useEffect(() => {
     if (user) {
@@ -20,24 +32,6 @@ const User = ({ user, iUsers, onEdit }) => {
       });
     }
   }, []);
-  // returns only even numbers greater than 10 =)
-  const keyGen = key => {
-    if (!key) return 10;
-    return 10 + (key * 2 - 2);
-  };
-  // adds a user item to array with other users
-  const addUser = () => {
-    setUsers(users => {
-      setUserCounter(userCounter + 1);
-      return [
-        ...users,
-        {
-          key: String(keyGen(userCounter + 1)),
-          value: { name, phone },
-        },
-      ];
-    });
-  };
 
   const editUser = keyToEdit => {
     onEdit(
@@ -69,47 +63,34 @@ const User = ({ user, iUsers, onEdit }) => {
   };
 
   return (
-    <View>
-      {/* Insert section */}
-      <View style={styles.input}>
-        <View style={styles.sub}>
-          <UserInput placeholder="Nome" value={name} onSetValue={setName} />
-          <UserInput
-            placeholder="Telefone"
-            value={phone}
-            onSetValue={setPhone}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button title="+" color={colors.primary} onPress={addUser}></Button>
-        </View>
-      </View>
-      {/* List seciton */}
-      <View>
-        <UserList
-          users={users}
-          onEditItem={editUser}
-          onDeleteItem={confirmRemoveUser}
-        />
-      </View>
+    <View style={styles.main}>
+      <UserList
+        users={users}
+        onEditItem={editUser}
+        onDeleteItem={confirmRemoveUser}
+      />
     </View>
   );
 };
 
+User.navigationOptions = navData => ({
+  headerTitle: 'Todos os usuários',
+  headerRight: () => (
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Adicionar"
+        iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+        onPress={() => {
+          navData.navigation.navigate('AddUser');
+        }}
+      />
+    </HeaderButtons>
+  ),
+});
+
 const styles = StyleSheet.create({
-  input: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: metrics.spacing,
-  },
-  sub: {
-    width: '90%',
-    flexDirection: 'column',
-  },
-  button: {
-    flex: 1,
-    justifyContent: 'center',
+  main: {
+    padding: metrics.spacing,
   },
 });
 

@@ -4,7 +4,12 @@ import { StyleSheet, Button, View, Text } from 'react-native';
 import { colors, metrics } from '../styles';
 import { UserInput, Card } from '../components';
 
-const UserDetails = ({ user, onBack }) => {
+const DEFAULT_USER = {
+  key: 101,
+  value: { name: 'Zezim', phone: 123 },
+};
+
+const UserDetails = ({ user = DEFAULT_USER, onBack = () => {} }) => {
   const { value } = user;
 
   const [name, setName] = useState(value.name);

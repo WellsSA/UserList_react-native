@@ -19,16 +19,14 @@ const styles = StyleSheet.create({
   inputSection: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   input: {
-    borderLeftColor: colors.primary,
-    borderLeftWidth: 1,
-    marginBottom: 4,
-    padding: 2,
-    paddingLeft: 10,
     flex: 1,
+    borderBottomColor: colors.grayBackground,
+    borderBottomWidth: 2,
+    marginBottom: 15,
+    paddingVertical: 4,
   },
 });
 
