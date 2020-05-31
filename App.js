@@ -1,7 +1,12 @@
 import React from 'react';
-
-import UsersNavigator from './navigation/UsersNavigator';
+import { Provider } from 'react-redux';
+import store from './src/store';
+import UsersNavigator from './src/navigation/UsersNavigator';
 
 export default function App() {
-  return <UsersNavigator />;
+  return (
+    <Provider store={store}>
+      <UsersNavigator />
+    </Provider>
+  );
 }
