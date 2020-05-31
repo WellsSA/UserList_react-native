@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, Button, ScrollView } from 'react-native';
 import UserInput from '../components/UserInput';
 import { metrics, colors } from '../styles';
+import { addUser as addUserAction } from '../store/users/actions';
 
 const AddUser = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -11,21 +15,16 @@ const AddUser = ({ navigation }) => {
     setNovoLugar(texto);
   };
   // returns only even numbers greater than 10 =)
-  const keyGen = key => {
-    if (!key) return 10;
-    return 10 + (key * 2 - 2);
-  };
+
   // adds a user item to array with other users
   const addUser = () => {
-    // setUsers(_users => { // TODO: Waiting for redux
-    //   return [
-    //     ..._users,
-    //     {
-    //       key: String(keyGen(_users.length + 1)),
-    //       value: { name, phone },
-    //     },
-    //   ];
-    // });
+    dispatch(
+      addUserAction({
+        name,
+        phone,
+      })
+    );
+
     navigation.navigate('UsersList');
   };
 

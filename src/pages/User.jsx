@@ -1,47 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { metrics } from '../styles';
 import { UserList, HeaderButton } from '../components';
+import { removeUser, selectUser } from '../store/users/actions';
 
-const DEFAULT_USERS = [
-  {
-    key: '10',
-    value: { name: 'Zezim', phone: '11977774444' },
-  },
-  {
-    key: '12',
-    value: { name: 'Zezim2', phone: '11977775555' },
-  },
-  {
-    key: '14',
-    value: { name: 'Zezim3', phone: '11977775555' },
-  },
-]; // TODO: Refactor using redux
-
-const User = ({ user, iUsers = DEFAULT_USERS, onEdit = () => {} }) => {
-  const [users, setUsers] = useState(iUsers);
-
-  useEffect(() => {
-    if (user) {
-      const index = users.findIndex(_user => _user.key === user.key);
-      setUsers(prevUsers => {
-        const _users = [...prevUsers];
-        _users[index] = user;
-        return _users;
-      });
-    }
-  }, []);
+const User = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.users.users);
 
   const editUser = keyToEdit => {
-    onEdit(
-      users.find(_user => _user.key === keyToEdit),
-      users
-    );
+    dispatch(selectUser({ user: users[keyToEdit] }));
+    navigation.navigate('UserDetails');
   };
 
-  const removeUser = keyToRemove => {
-    setUsers(users => users.filter(_user => _user.key !== keyToRemove));
+  const _removeUser = keyToRemove => {
+    dispatch(removeUser({ key: keyToRemove }));
   };
 
   const confirmRemoveUser = keyToRemove => {
@@ -52,7 +27,7 @@ const User = ({ user, iUsers = DEFAULT_USERS, onEdit = () => {} }) => {
         {
           text: 'Yes! (Remove it)',
           style: 'default',
-          onPress: () => removeUser(keyToRemove),
+          onPress: () => _removeUser(keyToRemove),
         },
         {
           text: 'No! (Cancel)',
