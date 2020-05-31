@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { colors, metrics } from '../../../styles';
 
 const UserListItem = ({ _key, user, onEdit, onDelete }) => {
-  const { name, phone } = user;
+  const { name, phone, imageURI } = user;
 
   return (
     <TouchableOpacity
@@ -11,6 +11,7 @@ const UserListItem = ({ _key, user, onEdit, onDelete }) => {
       onLongPress={onDelete.bind(this, _key)}
     >
       <View style={styles.listItem}>
+        <Image style={styles.image} source={{ uri: imageURI }} />
         <Text>
           {name} - {phone}
         </Text>
@@ -31,7 +32,17 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: metrics.elevation,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#ccc',
+    borderColor: colors.primary,
+    borderWidth: 1,
   },
 });
 

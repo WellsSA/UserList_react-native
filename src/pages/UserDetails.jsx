@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Button, View, Text } from 'react-native';
 
 import { colors, metrics } from '../styles';
-import { UserInput, Card } from '../components';
+import { UserInput, Card, TakePicture } from '../components';
 import { editUser } from '../store/users/actions';
 
 const UserDetails = ({ navigation }) => {
@@ -14,11 +14,16 @@ const UserDetails = ({ navigation }) => {
   const [name, setName] = useState(user.value.name);
   const [phone, setPhone] = useState(user.value.phone);
   const [editMode, setEditMode] = useState(false);
+  const [imageURI, setImageURI] = useState();
+
+  const handlePictureTaken = _imageURI => {
+    setImageURI(_imageURI);
+  };
 
   const _editUser = () => {
     const newUser = {
       key: user.key,
-      value: { name, phone },
+      value: { name, phone, imageURI },
     };
 
     dispatch(editUser({ user: newUser }));
@@ -26,7 +31,7 @@ const UserDetails = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.main}>
       {/* List seciton */}
       <Card>
         <Text>Nome: {user.value.name}</Text>
@@ -54,6 +59,7 @@ const UserDetails = ({ navigation }) => {
               value={phone}
               onSetValue={setPhone}
             />
+            <TakePicture onPictureTaken={handlePictureTaken} />
             <Button
               title="OK"
               color={colors.primary}
@@ -70,11 +76,16 @@ const UserDetails = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  main: {
+    padding: metrics.spacing,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   input: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: metrics.spacing,
+    marginVertical: 10,
   },
   sub: {
     width: '90%',

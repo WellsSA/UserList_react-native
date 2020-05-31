@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, Button, ScrollView } from 'react-native';
-import UserInput from '../components/UserInput';
+import { UserInput, TakePicture } from '../components';
 import { metrics, colors } from '../styles';
 import { addUser as addUserAction } from '../store/users/actions';
 
@@ -10,9 +10,10 @@ const AddUser = ({ navigation }) => {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [imageURI, setImageURI] = useState();
 
-  const novoLugarAlterado = texto => {
-    setNovoLugar(texto);
+  const handlePictureTaken = imageURI => {
+    setImageURI(imageURI);
   };
   // returns only even numbers greater than 10 =)
 
@@ -20,8 +21,11 @@ const AddUser = ({ navigation }) => {
   const addUser = () => {
     dispatch(
       addUserAction({
-        name,
-        phone,
+        user: {
+          name,
+          phone,
+          imageURI,
+        },
       })
     );
 
@@ -34,6 +38,7 @@ const AddUser = ({ navigation }) => {
         <Text style={styles.title}>Novo usuário</Text>
         <UserInput placeholder="Nome" value={name} onSetValue={setName} />
         <UserInput placeholder="Telefone" value={phone} onSetValue={setPhone} />
+        <TakePicture onPictureTaken={handlePictureTaken} />
         <Button
           title="Salvar Usuário"
           color={colors.primary}

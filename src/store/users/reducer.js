@@ -18,13 +18,13 @@ export default (state = initialState, action) => {
   console.log({ action, state });
   switch (action.type) {
     case ADD_USER: {
-      const { name, phone } = action.payload;
+      const { name, phone, imageURI } = action.payload.user;
       const key = String(keyGen(state.users.length + 1));
       return {
         ...state,
         users: state.users.concat({
           key,
-          value: { name, phone },
+          value: { name, phone, imageURI },
         }),
       };
     }

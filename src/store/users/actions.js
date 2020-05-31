@@ -3,10 +3,10 @@ export const EDIT_USER = 'EDIT_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 export const SELECT_USER = 'SELECT_USER';
 
-export const addUser = ({ name, phone }) => {
+export const addUser = ({ user }) => {
   return {
     type: ADD_USER,
-    payload: { name, phone },
+    payload: { user },
   };
 };
 
