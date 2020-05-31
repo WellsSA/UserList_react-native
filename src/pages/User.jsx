@@ -11,7 +11,10 @@ const User = ({ navigation }) => {
   const users = useSelector(state => state.users.users);
 
   const editUser = keyToEdit => {
-    dispatch(selectUser({ user: users[keyToEdit] }));
+    console.log({ users, keyToEdit });
+    dispatch(
+      selectUser({ user: users.find(_user => _user.key === keyToEdit) })
+    );
     navigation.navigate('UserDetails');
   };
 

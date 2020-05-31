@@ -4,22 +4,24 @@ import { StyleSheet, Button, View, Text } from 'react-native';
 
 import { colors, metrics } from '../styles';
 import { UserInput, Card } from '../components';
+import { editUser } from '../store/users/actions';
 
 const UserDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.users.selectedUser);
 
+  if (!user) return <Text>Error</Text>;
   const [name, setName] = useState(user.value.name);
   const [phone, setPhone] = useState(user.value.phone);
   const [editMode, setEditMode] = useState(false);
 
-  const editUser = () => {
+  const _editUser = () => {
     const newUser = {
       key: user.key,
       value: { name, phone },
     };
 
-    // edit user
+    dispatch(editUser({ user: newUser }));
     navigation.navigate('UsersList');
   };
 
@@ -27,8 +29,8 @@ const UserDetails = ({ navigation }) => {
     <View>
       {/* List seciton */}
       <Card>
-        <Text>Nome: {value.name}</Text>
-        <Text>Telefone: {value.phone}</Text>
+        <Text>Nome: {user.value.name}</Text>
+        <Text>Telefone: {user.value.phone}</Text>
       </Card>
       <View style={styles.input}>
         <Button
@@ -55,7 +57,7 @@ const UserDetails = ({ navigation }) => {
             <Button
               title="OK"
               color={colors.primary}
-              onPress={editUser}
+              onPress={_editUser}
             ></Button>
           </View>
           <View style={styles.button}></View>
