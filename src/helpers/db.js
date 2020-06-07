@@ -52,12 +52,12 @@ export const listUsers = () => {
   });
 };
 
-export const editUser = (id, name, phone, imageURI) => {
+export const editUser = (id, name, phone, imageURI, lastUpdate, lat, lon) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'UPDATE tb_user SET name=?, phone=?, imageURI=? WHERE id=?',
-        [name, phone, imageURI, id],
+        'UPDATE tb_user SET name=?, phone=?, imageURI=?, lastUpdate=?, lat=?, lon=? WHERE id=?',
+        [name, phone, imageURI, lastUpdate, lat, lon, id],
         (_, resultado) => resolve(resultado),
         (_, err) => reject(err)
       );

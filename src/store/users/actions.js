@@ -12,7 +12,7 @@ export const REMOVE_USER = 'REMOVE_USER';
 export const SELECT_USER = 'SELECT_USER';
 export const LIST_USERS = 'LIST_USERS';
 
-export const addUser = ({ user: { name, phone, imageURI } }) => {
+export const addUser = ({ user: { name, phone, imageURI, location } }) => {
   return async dispatch => {
     try {
       const newPath = await moveFile(imageURI);
@@ -21,8 +21,8 @@ export const addUser = ({ user: { name, phone, imageURI } }) => {
         phone,
         newPath,
         new Date().toISOString(),
-        48.8584,
-        2.2945
+        location.coords.latitude,
+        location.coords.longitude
       );
 
       console.log(JSON.stringify(result));
@@ -75,13 +75,21 @@ export const selectUser = ({ user }) => {
 export const editUser = ({
   user: {
     key,
-    value: { id, name, phone, imageURI },
+    value: { id, name, phone, imageURI, location },
   },
 }) => {
   return async dispatch => {
     try {
       const newPath = await moveFile(imageURI);
-      const result = await editUserSQL(id, name, phone, newPath);
+      const result = await editUserSQL(
+        id,
+        name,
+        phone,
+        newPath,
+        new Date().toISOString(),
+        location.coords.latitude,
+        location.coords.longitude
+      );
 
       console.log(result);
       dispatch({

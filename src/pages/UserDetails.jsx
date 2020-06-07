@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Button, View, Text } from 'react-native';
 
 import { colors, metrics } from '../styles';
 import { UserInput, Card, TakePicture } from '../components';
 import { editUser } from '../store/users/actions';
+import { getCurrentUserLocation } from '../helpers/location';
 
 const UserDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.users.selectedUser);
 
-  if (!user) return <Text>Error</Text>;
+  if (!user) return navigation.navigate('UsersList');
   const [name, setName] = useState(user.value.name);
   const [phone, setPhone] = useState(user.value.phone);
   const [editMode, setEditMode] = useState(false);
   const [imageURI, setImageURI] = useState(user.value.imageURI);
+  const [userLocation, setUserLocation] = useState();
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const _userLocation = await getCurrentUserLocation();
+
+      if (!_userLocation) {
+        navigation.navigate('UsersList');
+      }
+
+      setUserLocation(_userLocation);
+    };
+
+    getLocation();
+  }, []);
 
   const handlePictureTaken = _imageURI => {
     setImageURI(_imageURI);
@@ -23,7 +39,13 @@ const UserDetails = ({ navigation }) => {
   const _editUser = () => {
     const newUser = {
       key: user.key,
-      value: { id: user.value.id, name, phone, imageURI },
+      value: {
+        id: user.value.id,
+        name,
+        phone,
+        imageURI,
+        location: userLocation,
+      },
     };
 
     dispatch(editUser({ user: newUser }));

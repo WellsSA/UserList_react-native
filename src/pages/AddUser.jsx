@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, Button, ScrollView } from 'react-native';
 import { UserInput, TakePicture } from '../components';
 import { metrics, colors } from '../styles';
 import { addUser as addUserAction } from '../store/users/actions';
+import { getCurrentUserLocation } from '../helpers/location';
 
 const AddUser = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -11,6 +12,21 @@ const AddUser = ({ navigation }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [imageURI, setImageURI] = useState();
+  const [userLocation, setUserLocation] = useState();
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const _userLocation = await getCurrentUserLocation();
+
+      if (!_userLocation) {
+        navigation.navigate('UsersList');
+      }
+
+      setUserLocation(_userLocation);
+    };
+
+    getLocation();
+  }, []);
 
   const handlePictureTaken = imageURI => {
     setImageURI(imageURI);
@@ -25,6 +41,7 @@ const AddUser = ({ navigation }) => {
           name,
           phone,
           imageURI,
+          location: userLocation,
         },
       })
     );
