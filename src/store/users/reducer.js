@@ -1,13 +1,14 @@
-import { ADD_USER, EDIT_USER, REMOVE_USER, SELECT_USER } from './actions';
+import {
+  ADD_USER,
+  EDIT_USER,
+  REMOVE_USER,
+  SELECT_USER,
+  LIST_USERS,
+} from './actions';
 
 const initialState = {
   selectedUser: undefined,
-  users: [
-    {
-      key: '100',
-      value: { name: 'teste', phone: '1199997777' },
-    },
-  ],
+  users: [],
 };
 const keyGen = key => {
   if (!key) return 10;
@@ -29,6 +30,7 @@ export default (state = initialState, action) => {
     }
     case REMOVE_USER: {
       return {
+        ...state,
         users: state.users.filter(_user => _user.key !== action.payload.key),
       };
     }
@@ -49,6 +51,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         users: _users,
+      };
+    }
+    case LIST_USERS: {
+      return {
+        ...state,
+        users: action.payload.users.map(_user => ({
+          key: String(keyGen(_user.id)),
+          value: { ..._user },
+        })),
       };
     }
     default:

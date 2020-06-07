@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { metrics } from '../styles';
 import { UserList, HeaderButton } from '../components';
-import { removeUser, selectUser } from '../store/users/actions';
+import { removeUser, selectUser, listUser } from '../store/users/actions';
 
 const User = ({ navigation }) => {
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
+
+  useEffect(() => {
+    dispatch(listUser());
+  }, []);
 
   const editUser = keyToEdit => {
     console.log({ users, keyToEdit });
