@@ -16,7 +16,6 @@ const keyGen = key => {
 };
 
 export default (state = initialState, action) => {
-  console.log({ action, state });
   switch (action.type) {
     case ADD_USER: {
       const key = String(keyGen(action.payload.user.id));

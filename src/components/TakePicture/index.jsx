@@ -3,8 +3,8 @@ import { View, Button, Image, Text, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import colors from '../../styles/colors';
-const TakePicture = ({ onPictureTaken }) => {
-  const [imageURI, setImageURI] = useState();
+const TakePicture = ({ defaultImage = null, onPictureTaken }) => {
+  const [imageURI, setImageURI] = useState(defaultImage);
 
   const takeAPicture = async () => {
     const picture = await ImagePicker.launchCameraAsync({

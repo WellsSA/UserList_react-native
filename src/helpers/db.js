@@ -51,3 +51,16 @@ export const listUsers = () => {
     });
   });
 };
+
+export const editUser = (id, name, phone, imageURI) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE tb_user SET name=?, phone=?, imageURI=? where id=?',
+        [name, phone, imageURI, id],
+        (_, resultado) => resolve(resultado),
+        (_, err) => reject(err)
+      );
+    });
+  });
+};

@@ -1,5 +1,9 @@
 import { moveFile } from '../../helpers/file';
-import { insertUser, listUsers } from '../../helpers/db';
+import {
+  insertUser,
+  listUsers,
+  editUser as editUserSQL,
+} from '../../helpers/db';
 
 export const ADD_USER = 'ADD_USER';
 export const EDIT_USER = 'EDIT_USER';
@@ -54,9 +58,30 @@ export const selectUser = ({ user }) => {
   };
 };
 
-export const editUser = ({ user }) => {
-  return {
-    type: EDIT_USER,
-    payload: { user },
+export const editUser = ({
+  user: {
+    key,
+    value: { id, name, phone, imageURI },
+  },
+}) => {
+  return async dispatch => {
+    try {
+      const newPath = await moveFile(imageURI);
+      const result = await editUserSQL(id, name, phone, newPath);
+
+      console.log(result);
+      dispatch({
+        type: EDIT_USER,
+        payload: {
+          user: {
+            key,
+            value: { id, name, phone, imageURI: newPath },
+          },
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 };

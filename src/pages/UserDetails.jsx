@@ -14,7 +14,7 @@ const UserDetails = ({ navigation }) => {
   const [name, setName] = useState(user.value.name);
   const [phone, setPhone] = useState(user.value.phone);
   const [editMode, setEditMode] = useState(false);
-  const [imageURI, setImageURI] = useState();
+  const [imageURI, setImageURI] = useState(user.value.imageURI);
 
   const handlePictureTaken = _imageURI => {
     setImageURI(_imageURI);
@@ -23,7 +23,7 @@ const UserDetails = ({ navigation }) => {
   const _editUser = () => {
     const newUser = {
       key: user.key,
-      value: { name, phone, imageURI },
+      value: { id: user.value.id, name, phone, imageURI },
     };
 
     dispatch(editUser({ user: newUser }));
@@ -59,7 +59,10 @@ const UserDetails = ({ navigation }) => {
               value={phone}
               onSetValue={setPhone}
             />
-            <TakePicture onPictureTaken={handlePictureTaken} />
+            <TakePicture
+              defaultImage={user.value.imageURI}
+              onPictureTaken={handlePictureTaken}
+            />
             <Button
               title="OK"
               color={colors.primary}
