@@ -16,9 +16,16 @@ export const addUser = ({ user: { name, phone, imageURI } }) => {
   return async dispatch => {
     try {
       const newPath = await moveFile(imageURI);
-      const result = await insertUser(name, phone, newPath);
+      const result = await insertUser(
+        name,
+        phone,
+        newPath,
+        new Date().toISOString(),
+        48.8584,
+        2.2945
+      );
 
-      console.log(result);
+      console.log(JSON.stringify(result));
       dispatch({
         type: ADD_USER,
         payload: {
