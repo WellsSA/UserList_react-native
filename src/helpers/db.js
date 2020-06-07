@@ -56,8 +56,21 @@ export const editUser = (id, name, phone, imageURI) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'UPDATE tb_user SET name=?, phone=?, imageURI=? where id=?',
+        'UPDATE tb_user SET name=?, phone=?, imageURI=? WHERE id=?',
         [name, phone, imageURI, id],
+        (_, resultado) => resolve(resultado),
+        (_, err) => reject(err)
+      );
+    });
+  });
+};
+
+export const deleteUser = id => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM tb_user WHERE id=?',
+        [id],
         (_, resultado) => resolve(resultado),
         (_, err) => reject(err)
       );

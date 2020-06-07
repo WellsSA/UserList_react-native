@@ -23,7 +23,9 @@ const User = ({ navigation }) => {
   };
 
   const _removeUser = keyToRemove => {
-    dispatch(removeUser({ key: keyToRemove }));
+    dispatch(
+      removeUser({ user: users.find(_user => _user.key === keyToRemove) })
+    );
   };
 
   const confirmRemoveUser = keyToRemove => {

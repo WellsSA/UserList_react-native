@@ -3,6 +3,7 @@ import {
   insertUser,
   listUsers,
   editUser as editUserSQL,
+  deleteUser,
 } from '../../helpers/db';
 
 export const ADD_USER = 'ADD_USER';
@@ -44,10 +45,16 @@ export const listUser = () => {
   };
 };
 
-export const removeUser = ({ key }) => {
-  return {
-    type: REMOVE_USER,
-    payload: { key },
+export const removeUser = ({ user }) => {
+  return async dispatch => {
+    try {
+      const result = await deleteUser(user.value.id);
+      console.log(result);
+      dispatch({ type: REMOVE_USER, payload: { key: user.key } });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 };
 
