@@ -15,7 +15,6 @@ const User = ({ navigation }) => {
   }, []);
 
   const editUser = keyToEdit => {
-    console.log({ users, keyToEdit });
     dispatch(
       selectUser({ user: users.find(_user => _user.key === keyToEdit) })
     );

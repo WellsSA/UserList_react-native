@@ -67,15 +67,18 @@ export const listUsers = () => {
 
 export const editUser = (id, name, phone, imageURI, lastUpdate, lat, lon) => {
   return new Promise((resolve, reject) => {
-    resolve();
-    // db.transaction(tx => {
-    //   tx.executeSql(
-    //     'UPDATE tb_user SET name=?, phone=?, imageURI=?, lastUpdate=?, lat=?, lon=? WHERE id=?',
-    //     [name, phone, imageURI, lastUpdate, lat, lon, id],
-    //     (_, resultado) => resolve(resultado),
-    //     (_, err) => reject(err)
-    //   );
-    // });
+    db.collection(COLLECTION)
+      .doc(id)
+      .update({
+        name,
+        phone,
+        imageURI,
+        lastUpdate,
+        lat,
+        lon,
+      })
+      .then(resolve)
+      .catch(reject);
   });
 };
 
