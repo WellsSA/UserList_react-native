@@ -5,31 +5,17 @@ import firebaseConfig from '../config/firebase';
 import 'firebase/firestore';
 
 let db = undefined;
+const COLLECTION = 'users';
 
 export const init = () => {
   return new Promise((resolve, reject) => {
     try {
       if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
-
-      db.collection('lembretes').add({
-        texto: 'Aeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew',
-        data: new Date(),
-      });
-
       resolve(db);
     } catch (err) {
       reject(err);
     }
-
-    // db.transaction(tx => {
-    //   tx.executeSql(
-    //     'CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, imageURI TEXT NOT NULL, lastUpdate TEXT NOT NULL, lat REAL NOT NULL, lon REAL NOT NULL);',
-    //     [],
-    //     () => resolve(),
-    //     (_, err) => reject(err)
-    //   );
-    // });
   });
 };
 
@@ -46,29 +32,36 @@ export const initialize = () => {
 
 export const insertUser = (name, phone, imageURI, lastUpdate, lat, lon) => {
   return new Promise((resolve, reject) => {
-    resolve();
-    // db.transaction(tx => {
-    //   tx.executeSql(
-    //     'INSERT INTO tb_user (name, phone, imageURI, lastUpdate, lat, lon) VALUES (?,?,?,?,?,?)',
-    //     [name, phone, imageURI, lastUpdate, lat, lon],
-    //     (_, resultado) => resolve(resultado),
-    //     (_, err) => reject(err)
-    //   );
-    // });
+    db.collection(COLLECTION)
+      .add({
+        name,
+        phone,
+        imageURI,
+        lastUpdate,
+        lat,
+        lon,
+      })
+      .then(resolve)
+      .catch(reject);
   });
 };
 
 export const listUsers = () => {
   return new Promise((resolve, reject) => {
-    resolve();
-    // db.transaction(tx => {
-    //   tx.executeSql(
-    //     'SELECT * FROM tb_user',
-    //     [],
-    //     (_, resultado) => resolve(resultado),
-    //     (_, err) => reject(err)
-    //   );
-    // });
+    db.collection(COLLECTION).onSnapshot(snapshot => {
+      let data = [];
+
+      snapshot.forEach(doc => {
+        data.push({
+          id: doc.id,
+          name: doc.data().name,
+          phone: doc.data().phone,
+          imageURI: doc.data().imageURI,
+        });
+      });
+
+      resolve(data);
+    });
   });
 };
 

@@ -44,7 +44,7 @@ export const listUser = () => {
     try {
       const result = await listUsers();
       console.log(result);
-      dispatch({ type: LIST_USERS, payload: { users: result.rows._array } });
+      dispatch({ type: LIST_USERS, payload: { users: result } });
     } catch (err) {
       console.log(err);
       throw err;
