@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { View, StyleSheet, Text, Button, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { UserInput, TakePicture } from '../components';
 import { metrics, colors } from '../styles';
 import { addUser as addUserAction } from '../store/users/actions';
@@ -13,16 +20,19 @@ const AddUser = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [imageURI, setImageURI] = useState();
   const [userLocation, setUserLocation] = useState();
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     const getLocation = async () => {
+      setLoading(true);
       const _userLocation = await getCurrentUserLocation();
 
       if (!_userLocation) {
-        navigation.navigate('UsersList');
+        return navigation.navigate('UsersList');
       }
 
       setUserLocation(_userLocation);
+      setLoading(false);
     };
 
     getLocation();
@@ -35,6 +45,13 @@ const AddUser = ({ navigation }) => {
 
   // adds a user item to array with other users
   const addUser = () => {
+    if (loading) {
+      return Alert.alert(
+        'Wait a moment',
+        "We're trying to find your location yet.",
+        [{ text: 'Ok' }]
+      );
+    }
     dispatch(
       addUserAction({
         user: {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Button, View, Text } from 'react-native';
+import { StyleSheet, Button, View, Text, Alert } from 'react-native';
 
 import { colors, metrics } from '../styles';
 import { UserInput, Card, TakePicture } from '../components';
@@ -17,9 +17,11 @@ const UserDetails = ({ navigation }) => {
   const [editMode, setEditMode] = useState(false);
   const [imageURI, setImageURI] = useState(user.value.imageURI);
   const [userLocation, setUserLocation] = useState();
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     const getLocation = async () => {
+      setLoading(true);
       const _userLocation = await getCurrentUserLocation();
 
       if (!_userLocation) {
@@ -27,6 +29,7 @@ const UserDetails = ({ navigation }) => {
       }
 
       setUserLocation(_userLocation);
+      setLoading(false);
     };
 
     getLocation();
@@ -37,6 +40,13 @@ const UserDetails = ({ navigation }) => {
   };
 
   const _editUser = () => {
+    if (loading) {
+      return Alert.alert(
+        'Wait a moment',
+        "We're trying to find your location yet.",
+        [{ text: 'Ok' }]
+      );
+    }
     const newUser = {
       key: user.key,
       value: {
