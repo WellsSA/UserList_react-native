@@ -81,14 +81,6 @@ export const editUser = (id, name, phone, imageURI, lastUpdate, lat, lon) => {
 
 export const deleteUser = id => {
   return new Promise((resolve, reject) => {
-    resolve();
-    // db.transaction(tx => {
-    //   tx.executeSql(
-    //     'DELETE FROM tb_user WHERE id=?',
-    //     [id],
-    //     (_, resultado) => resolve(resultado),
-    //     (_, err) => reject(err)
-    //   );
-    // });
+    db.collection(COLLECTION).doc(id).delete().then(resolve).catch(reject);
   });
 };

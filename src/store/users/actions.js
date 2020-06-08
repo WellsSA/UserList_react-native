@@ -25,7 +25,6 @@ export const addUser = ({ user: { name, phone, imageURI, location } }) => {
         location.coords.longitude
       );
 
-      console.log(JSON.stringify(result));
       dispatch({
         type: ADD_USER,
         payload: {

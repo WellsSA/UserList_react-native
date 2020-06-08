@@ -10,10 +10,7 @@ const initialState = {
   selectedUser: undefined,
   users: [],
 };
-const keyGen = key => {
-  if (!key) return 10;
-  return 10 + (key * 2 - 2);
-};
+const keyGen = key => key;
 
 export default (state = initialState, action) => {
   switch (action.type) {
