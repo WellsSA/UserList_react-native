@@ -1,9 +1,27 @@
 // import * as SQLite from 'expo-sqlite';
 // const db = SQLite.openDatabase('users.db');
+import * as firebase from 'firebase';
+import firebaseConfig from '../config/firebase';
+import 'firebase/firestore';
+
+let db = undefined;
 
 export const init = () => {
   return new Promise((resolve, reject) => {
-    resolve();
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+
+      db.collection('lembretes').add({
+        texto: 'Aeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew',
+        data: new Date(),
+      });
+
+      resolve(db);
+    } catch (err) {
+      reject(err);
+    }
+
     // db.transaction(tx => {
     //   tx.executeSql(
     //     'CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, imageURI TEXT NOT NULL, lastUpdate TEXT NOT NULL, lat REAL NOT NULL, lon REAL NOT NULL);',
