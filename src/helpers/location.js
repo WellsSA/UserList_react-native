@@ -9,7 +9,6 @@ export const getCurrentUserLocation = async () => {
       const location = await Location.getCurrentPositionAsync({
         timeout: 8000,
       });
-      // console.log(location);
       return location;
     } catch (err) {
       Alert.alert(

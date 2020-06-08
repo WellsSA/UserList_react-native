@@ -22,11 +22,11 @@ export const init = () => {
 export const initialize = () => {
   init()
     .then(() => {
-      console.log('Database created.');
+      console.info('Database created.');
     })
     .catch(err => {
-      console.log('Database creation failed.');
-      console.log(err);
+      console.error('Database creation failed.');
+      console.error(err);
     });
 };
 

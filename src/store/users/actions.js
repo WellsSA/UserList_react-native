@@ -32,7 +32,7 @@ export const addUser = ({ user: { name, phone, imageURI, location } }) => {
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };
@@ -42,10 +42,9 @@ export const listUser = () => {
   return async dispatch => {
     try {
       const result = await listUsers();
-      console.log(result);
       dispatch({ type: LIST_USERS, payload: { users: result } });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };
@@ -55,10 +54,9 @@ export const removeUser = ({ user }) => {
   return async dispatch => {
     try {
       const result = await deleteUser(user.value.id);
-      console.log(result);
       dispatch({ type: REMOVE_USER, payload: { key: user.key } });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };
@@ -90,7 +88,6 @@ export const editUser = ({
         location.coords.longitude
       );
 
-      console.log(result);
       dispatch({
         type: EDIT_USER,
         payload: {
@@ -101,7 +98,7 @@ export const editUser = ({
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };

@@ -7,7 +7,7 @@ export const moveFile = async from => {
     await FileSystem.moveAsync({ from, to });
     return to;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return null;
   }
 };
